@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ORVO — Your Personal Jarvis AI - Opens Any Site</title>
+<meta name="description" content="ORVO Jarvis opens any website, app, does goals 1000x fast">
+<link rel="icon" href="logo.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{background:#0a0a0a;color:#fff;min-height:100vh;display:flex;flex-direction:column}
+.header{padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1a1a1a;position:sticky;top:0;background:rgba(10,10,10,0.9);z-index:10}
+.logo{font-weight:900;font-size:22px;display:flex;gap:8px;align-items:center}.logo span{color:#3b82f6}
+#badge{font-size:11px;background:#111;border:1px solid #222;padding:6px 12px;border-radius:20px;color:#22c55e}
+#chat{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:10px;max-width:850px;width:100%;margin:0 auto}
+.msg{padding:12px 16px;border-radius:14px;max-width:85%;font-size:14px;line-height:1.5}
+.user{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:4px}
+.orvo{align-self:flex-start;background:#151515;border:1px solid #222;color:#e5e5e5;border-bottom-left-radius:4px}
+.inputWrap{padding:14px;border-top:1px solid #1a1a1a;position:sticky;bottom:0;background:#0a0a0a}
+.bar{max-width:850px;margin:0 auto;display:flex;gap:8px}
+.bar input{flex:1;padding:14px 16px;border-radius:12px;border:1px solid #222;background:#141414;color:#fff;outline:none;font-size:15px}
+.bar button{padding:0 22px;border-radius:12px;border:none;background:#3b82f6;color:#fff;font-weight:700;cursor:pointer}
+.quick{max-width:850px;margin:0 auto 10px;display:flex;gap:6px;flex-wrap:wrap}
+.quick span{font-size:11px;padding:5px 10px;background:#1a1a1a;border:1px solid #222;border-radius:20px;color:#888;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="header"><div class="logo">ORVO<span>.</span></div><div id="badge">● LIVE • FAST • UNIVERSAL</div></div>
+<div id="chat">
+<div class="msg orvo">ORVO UNIVERSAL Activated ⚡<br><br>I can open ANY site now:<br>• open youtube<br>• open instagram<br>• open netflix<br>• open chatgpt and message hi<br>• open google and search BMW video<br>• open github.com<br>• open any website.com<br>• goal: make viral video</div>
+</div>
+<div class="inputWrap">
+<div class="quick">
+<span onclick="setC('open youtube')">youtube</span>
+<span onclick="setC('open instagram')">instagram</span>
+<span onclick="setC('open chatgpt and message hi')">chatgpt</span>
+<span onclick="setC('open github')">github</span>
+<span onclick="setC('open netflix')">netflix</span>
+<span onclick="setC('open google.com')">google</span>
+<span onclick="setC('goal: open all tools')">goal</span>
+</div>
+<div class="bar" style="margin-top:8px"><input id="inp" placeholder="Tell ORVO: open any site..." onkeydown="if(event.key==='Enter')run()"><button onclick="run()">SEND</button></div>
+</div>
+<script>
+let chat=document.getElementById('chat');
+function setC(t){document.getElementById('inp').value=t;run();}
+function add(t,w){let d=document.createElement('div');d.className='msg '+w;d.textContent=t;chat.appendChild(d);chat.scrollTop=99999;}
+
+const SITES={
+chatgpt:['https://chatgpt.com','chatgpt://open'],
+youtube:['https://youtube.com','vnd.youtube://'],
+instagram:['https://instagram.com','instagram://'],
+facebook:['https://facebook.com','fb://'],
+twitter:['https://x.com','twitter://'],x:['https://x.com','twitter://'],
+linkedin:['https://linkedin.com','linkedin://'],
+github:['https://github.com','github://'],
+netflix:['https://netflix.com','nflx://'],
+spotify:['https://spotify.com','spotify://'],
+google:['https://google.com','https://google.com'],
+ggl:['https://aistudio.google.com','https://aistudio.google.com'],
+gmail:['https://mail.google.com','googlegmail://'],
+whatsapp:['https://web.whatsapp.com','whatsapp://'],
+reddit:['https://reddit.com','reddit://'],
+amazon:['https://amazon.com','amazon://'],
+flipkart:['https://flipkart.com','flipkart://'],
+honk:['https://huggingface.co/spaces/zyr0nxgg/ORVO','https://huggingface.co/spaces/zyr0nxgg/ORVO'],
+orvo:['https://orvo-ai.web.app','https://orvo-ai.web.app']
+};
+
+function openUniversal(name, msg){
+let key=name.toLowerCase().trim();
+let appUrl='', webUrl='';
+
+// direct match
+if(SITES[key]){webUrl=SITES[key][0];appUrl=SITES[key][1]||webUrl;}
+else if(key.includes('.')){ // has dot like google.com
+  webUrl = key.startsWith('http')?key:'https://'+key;
+  appUrl=webUrl;
+}
+else{ // search google
+  let q = msg || name;
+  webUrl=`https://www.google.com/search?q=${encodeURIComponent(q)}`;
+  appUrl=webUrl;
+}
+
+if(msg && (key==='chatgpt' || key==='google' || key==='youtube')){
+  if(key==='chatgpt') { webUrl+=`?q=${encodeURIComponent(msg)}`; appUrl=`chatgpt://open?q=${encodeURIComponent(msg)}`; }
+  if(key==='google') webUrl=`https://www.google.com/search?q=${encodeURIComponent(msg)}`;
+  if(key==='youtube') webUrl=`https://www.youtube.com/results?search_query=${encodeURIComponent(msg)}`;
+}
+
+add(`Opening ${name}${msg?' with "'+msg+'"':''}... 🚀`, 'orvo');
+try{ window.location.href=appUrl; }catch(e){}
+setTimeout(()=>window.open(webUrl,'_blank'),500);
+}
+
+function run(){
+let raw=document.getElementById('inp').value.trim();if(!raw)return;
+add(raw,'user');document.getElementById('inp').value='';
+let low=raw.toLowerCase();
+
+if(low.includes('close web')||low.includes('band kar')){add('Closing...','orvo');setTimeout(()=>{window.close();location.href='about:blank';},400);return;}
+
+let msgAfter="";
+if(low.includes(' and message ')) msgAfter=raw.split(/and message/i)[1].trim();
+else if(low.includes(' and search ')) msgAfter=raw.split(/and search/i)[1].trim();
+else if(low.includes(' and say ')) msgAfter=raw.split(/and say/i)[1].trim();
+
+// extract site name
+let site = raw.toLowerCase().replace('open','').replace('orvo','').trim();
+site = site.split(' and ')[0].trim();
+if(site.startsWith('goal:')) site=site.replace('goal:','').trim();
+
+if(low.startsWith('goal:')||low.startsWith('make')||low.startsWith('create')){
+  add(`⚡ GOAL MODE: ${raw} — Opening tools fast...`,'orvo');
+  let tools=['https://aistudio.google.com','https://chatgpt.com','https://v0.dev'];
+  tools.forEach((u,i)=>setTimeout(()=>window.open(u,'_blank'), i*300));
+  return;
+}
+
+if(low.includes('open')){
+  // get first word after open as site
+  let parts = site.split(' ');
+  let mainSite = parts[0];
+  openUniversal(mainSite, msgAfter || parts.slice(1).join(' '));
+}else{
+  // if no open word, treat as site
+  openUniversal(site, msgAfter);
+}
+}
+</script>
+</body>
+</html>
