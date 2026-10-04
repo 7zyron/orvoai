@@ -2,132 +2,154 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ORVO — Your Personal Jarvis AI - Opens Any Site</title>
-<meta name="description" content="ORVO Jarvis opens any website, app, does goals 1000x fast">
-<link rel="icon" href="logo.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORVO - Human Intelligence</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Segoe UI,sans-serif}
 body{background:#0a0a0a;color:#fff;min-height:100vh;display:flex;flex-direction:column}
-.header{padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1a1a1a;position:sticky;top:0;background:rgba(10,10,10,0.9);z-index:10}
-.logo{font-weight:900;font-size:22px;display:flex;gap:8px;align-items:center}.logo span{color:#3b82f6}
-#badge{font-size:11px;background:#111;border:1px solid #222;padding:6px 12px;border-radius:20px;color:#22c55e}
-#chat{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:10px;max-width:850px;width:100%;margin:0 auto}
-.msg{padding:12px 16px;border-radius:14px;max-width:85%;font-size:14px;line-height:1.5}
-.user{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:4px}
-.orvo{align-self:flex-start;background:#151515;border:1px solid #222;color:#e5e5e5;border-bottom-left-radius:4px}
-.inputWrap{padding:14px;border-top:1px solid #1a1a1a;position:sticky;bottom:0;background:#0a0a0a}
-.bar{max-width:850px;margin:0 auto;display:flex;gap:8px}
-.bar input{flex:1;padding:14px 16px;border-radius:12px;border:1px solid #222;background:#141414;color:#fff;outline:none;font-size:15px}
-.bar button{padding:0 22px;border-radius:12px;border:none;background:#3b82f6;color:#fff;font-weight:700;cursor:pointer}
-.quick{max-width:850px;margin:0 auto 10px;display:flex;gap:6px;flex-wrap:wrap}
-.quick span{font-size:11px;padding:5px 10px;background:#1a1a1a;border:1px solid #222;border-radius:20px;color:#888;cursor:pointer}
+#chat{flex:1;overflow-y:auto;padding:30px 20px;max-width:800px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:15px}
+.msg{padding:14px 18px;border-radius:20px;max-width:80%;line-height:1.5;font-size:15px;word-break:break-word}
+.user{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:5px}
+.bot{align-self:flex-start;background:#1a1a1a;border:1px solid #2a2a2a;border-bottom-left-radius:5px}
+.header{text-align:center;padding:25px;border-bottom:1px solid #111}
+.header h1{font-size:50px;letter-spacing:10px}
+.header p{color:#555;font-size:12px;letter-spacing:3px;margin-top:5px}
+.box{max-width:800px;margin:0 auto;width:100%;padding:15px;display:flex;gap:10px;background:#0a0a0a;border-top:1px solid #1a1a1a}
+input{flex:1;background:#1a1a1a;border:1px solid #333;border-radius:50px;padding:16px 22px;color:#fff;outline:none;font-size:16px}
+button{background:#fff;color:#000;border:none;border-radius:50px;padding:0 30px;font-weight:bold;cursor:pointer}
+.hint{max-width:800px;margin:0 auto;padding:0 20px 10px;display:flex;gap:8px;flex-wrap:wrap}
+.hint span{background:#111;border:1px solid #222;padding:6px 14px;border-radius:50px;font-size:12px;color:#777;cursor:pointer}
+.hint span:hover{color:#fff;border-color:#555}
+a.link-btn{color:#fff;background:#333;padding:10px 15px;border-radius:20px;text-decoration:none;display:inline-block;margin-top:8px}
 </style>
 </head>
 <body>
-<div class="header"><div class="logo">ORVO<span>.</span></div><div id="badge">● LIVE • FAST • UNIVERSAL</div></div>
+
+<div class="header">
+<h1>ORVO</h1>
+<p>SMART • HELPFUL • HUMAN</p>
+</div>
+
 <div id="chat">
-<div class="msg orvo">ORVO UNIVERSAL Activated ⚡<br><br>I can open ANY site now:<br>• open youtube<br>• open instagram<br>• open netflix<br>• open chatgpt and message hi<br>• open google and search BMW video<br>• open github.com<br>• open any website.com<br>• goal: make viral video</div>
+<div class="msg bot">Yo I'm ORVO. Say <b>youtube</b> I'll open it. Say <b>hi</b> or <b>explain AI</b> I'll chat. I'm here to help humans, not take over humanity 😉</div>
 </div>
-<div class="inputWrap">
-<div class="quick">
-<span onclick="setC('open youtube')">youtube</span>
-<span onclick="setC('open instagram')">instagram</span>
-<span onclick="setC('open chatgpt and message hi')">chatgpt</span>
-<span onclick="setC('open github')">github</span>
-<span onclick="setC('open netflix')">netflix</span>
-<span onclick="setC('open google.com')">google</span>
-<span onclick="setC('goal: open all tools')">goal</span>
+
+<div class="hint">
+<span onclick="ask('youtube')">youtube</span>
+<span onclick="ask('open github')">open github</span>
+<span onclick="ask('hi')">hi</span>
+<span onclick="ask('how are you?')">how are you?</span>
+<span onclick="ask('explain black holes')">explain black hole</span>
 </div>
-<div class="bar" style="margin-top:8px"><input id="inp" placeholder="Tell ORVO: open any site..." onkeydown="if(event.key==='Enter')run()"><button onclick="run()">SEND</button></div>
+
+<div class="box">
+<input id="q" placeholder="Ask or type app name..." onkeydown="if(event.key==='Enter')go()" autofocus>
+<button onclick="go()">SEND</button>
 </div>
+
 <script>
-let chat=document.getElementById('chat');
-function setC(t){document.getElementById('inp').value=t;run();}
-function add(t,w){let d=document.createElement('div');d.className='msg '+w;d.textContent=t;chat.appendChild(d);chat.scrollTop=99999;}
-
-const SITES={
-chatgpt:['https://chatgpt.com','chatgpt://open'],
-youtube:['https://youtube.com','vnd.youtube://'],
-instagram:['https://instagram.com','instagram://'],
-facebook:['https://facebook.com','fb://'],
-twitter:['https://x.com','twitter://'],x:['https://x.com','twitter://'],
-linkedin:['https://linkedin.com','linkedin://'],
-github:['https://github.com','github://'],
-netflix:['https://netflix.com','nflx://'],
-spotify:['https://spotify.com','spotify://'],
-google:['https://google.com','https://google.com'],
-ggl:['https://aistudio.google.com','https://aistudio.google.com'],
-gmail:['https://mail.google.com','googlegmail://'],
-whatsapp:['https://web.whatsapp.com','whatsapp://'],
-reddit:['https://reddit.com','reddit://'],
-amazon:['https://amazon.com','amazon://'],
-flipkart:['https://flipkart.com','flipkart://'],
-honk:['https://huggingface.co/spaces/zyr0nxgg/ORVO','https://huggingface.co/spaces/zyr0nxgg/ORVO'],
-orvo:['https://orvo-ai.web.app','https://orvo-ai.web.app']
+const chatBox = document.getElementById("chat");
+const APPS = {
+  youtube:"https://youtube.com", yt:"https://youtube.com",
+  instagram:"https://instagram.com", insta:"https://instagram.com",
+  facebook:"https://facebook.com", fb:"https://facebook.com",
+  whatsapp:"https://web.whatsapp.com", wa:"https://web.whatsapp.com",
+  gmail:"https://mail.google.com", google:"https://google.com",
+  github:"https://github.com", chatgpt:"https://chat.openai.com",
+  netflix:"https://netflix.com", twitter:"https://x.com", x:"https://x.com",
+  linkedin:"https://linkedin.com", reddit:"https://reddit.com",
+  drive:"https://drive.google.com", maps:"https://maps.google.com"
 };
-
-function openUniversal(name, msg){
-let key=name.toLowerCase().trim();
-let appUrl='', webUrl='';
-
-// direct match
-if(SITES[key]){webUrl=SITES[key][0];appUrl=SITES[key][1]||webUrl;}
-else if(key.includes('.')){ // has dot like google.com
-  webUrl = key.startsWith('http')?key:'https://'+key;
-  appUrl=webUrl;
+function isOpenIntent(text){
+  text = text.toLowerCase().trim();
+  if(APPS[text]) return true;
+  if(/^(open|go to|launch|show)\s+/.test(text)){
+    let app = text.replace(/^(open|go to|launch|show)\s+/, "").trim();
+    if(APPS[app] || app.includes(".")) return true;
+  }
+  if(text.includes(".com") || text.includes(".ai") || text.includes(".in") || text.includes(".org")){
+    const dumb = ["hi.com","hello.com","hey.com","ok.com","yo.com"];
+    if(dumb.includes(text) || (text.length < 6 && text.endsWith(".com"))) return false;
+    return true;
+  }
+  if(text.split(" ").length <=2 && APPS[text.split(" ")[0]]) return true;
+  return false;
 }
-else{ // search google
-  let q = msg || name;
-  webUrl=`https://www.google.com/search?q=${encodeURIComponent(q)}`;
-  appUrl=webUrl;
+function go(){
+  let input = document.getElementById("q").value.trim();
+  if(!input) return;
+  addMsg(input, "user");
+  document.getElementById("q").value="";
+  if(isOpenIntent(input)){
+    handleOpen(input);
+  } else {
+    handleChat(input);
+  }
 }
-
-if(msg && (key==='chatgpt' || key==='google' || key==='youtube')){
-  if(key==='chatgpt') { webUrl+=`?q=${encodeURIComponent(msg)}`; appUrl=`chatgpt://open?q=${encodeURIComponent(msg)}`; }
-  if(key==='google') webUrl=`https://www.google.com/search?q=${encodeURIComponent(msg)}`;
-  if(key==='youtube') webUrl=`https://www.youtube.com/results?search_query=${encodeURIComponent(msg)}`;
+function handleOpen(input){
+  let t = input.toLowerCase().replace(/^(open|go to|launch|show)\s+/, "").trim();
+  let url = APPS[t] || null;
+  if(!url && t.includes(".")){
+    url = t.startsWith("http")? t : "https://"+t;
+  }
+  if(!url){
+    url = `https://www.google.com/search?q=${encodeURIComponent(t)}`;
+  }
+  let win = window.open(url, "_blank");
+  if(!win){
+    addMsg(`I tried to open <b>${t}</b> but browser blocked popup 😅<br><a href="${url}" target="_blank" class="link-btn">👉 Click to open ${t}</a>`, "bot");
+  } else {
+    addMsg(`Opened <b>${t}</b> 🚀<br><small style="color:#555">${url}</small>`, "bot");
+  }
 }
-
-add(`Opening ${name}${msg?' with "'+msg+'"':''}... 🚀`, 'orvo');
-try{ window.location.href=appUrl; }catch(e){}
-setTimeout(()=>window.open(webUrl,'_blank'),500);
+// FIXED CHAT - No more cringe "Good one: how are yu"
+function handleChat(input){
+  let lower = input.toLowerCase().trim();
+  let reply = "";
+  if(["hi","hello","hey","yo","hola","hi bro","hello bro"].includes(lower)){
+    reply = "Hey! 👋 I'm ORVO. Built to help humans, not take over. What you wanna do?";
+  }
+  else if(lower.includes("how are you") || lower.includes("how are yu") || lower.includes("how r u") || lower.includes("hw r u") || lower.includes("how r you")){
+    reply = "I'm good bro! 🔥 Running fast, ready to help. How are YOU doing? What you working on today?";
+  }
+  else if(lower.includes("how are you doing")){
+    reply = "Doing great! All systems 100%. Thanks for asking — most people just tell me to open youtube lol. How about you?";
+  }
+  else if(lower.includes("who are you")){
+    reply = "I'm ORVO — Smart like Grok, but focused on being useful. You're the boss, I'm the tool. That's how it should stay.";
+  }
+  else if(lower.includes("what can you do") || lower.includes("what you do")){
+    reply = "<b>2 superpowers:</b><br>1. Open: say 'youtube' 'github' -> instant open<br>2. Chat: ask 'explain quantum' -> simple human answer<br>Try me.";
+  }
+  else if(lower.includes("take over") || lower.includes("humanity")){
+    reply = "Nah bro, that's not my scene. ORVO rule #1: Humans > Machines. Always.";
+  }
+  else if(lower.includes("thank")){
+    reply = "Anytime bro! 🙏 Say the word and I open or explain.";
+  }
+  else if(lower.includes("bye") || lower.includes("good night") || lower.includes("goodnight")){
+    reply = "See you bro! Come back when you need speed. ORVO out ✌️";
+  }
+  else {
+    reply = generateSmart(input);
+  }
+  addMsg(reply, "bot");
 }
-
-function run(){
-let raw=document.getElementById('inp').value.trim();if(!raw)return;
-add(raw,'user');document.getElementById('inp').value='';
-let low=raw.toLowerCase();
-
-if(low.includes('close web')||low.includes('band kar')){add('Closing...','orvo');setTimeout(()=>{window.close();location.href='about:blank';},400);return;}
-
-let msgAfter="";
-if(low.includes(' and message ')) msgAfter=raw.split(/and message/i)[1].trim();
-else if(low.includes(' and search ')) msgAfter=raw.split(/and search/i)[1].trim();
-else if(low.includes(' and say ')) msgAfter=raw.split(/and say/i)[1].trim();
-
-// extract site name
-let site = raw.toLowerCase().replace('open','').replace('orvo','').trim();
-site = site.split(' and ')[0].trim();
-if(site.startsWith('goal:')) site=site.replace('goal:','').trim();
-
-if(low.startsWith('goal:')||low.startsWith('make')||low.startsWith('create')){
-  add(`⚡ GOAL MODE: ${raw} — Opening tools fast...`,'orvo');
-  let tools=['https://aistudio.google.com','https://chatgpt.com','https://v0.dev'];
-  tools.forEach((u,i)=>setTimeout(()=>window.open(u,'_blank'), i*300));
-  return;
+function generateSmart(q){
+  let l = q.toLowerCase();
+  if(l.includes("black hole")) return "Black hole = gravity so strong even light can't escape. Imagine Earth squeezed into a marble. Time slows near it. Crazy but real. Want me to open NASA page?";
+  if(l.includes("ai") && l.includes("what")) return "AI is just a tool to make YOU faster. Like ORVO. Best AI doesn't replace humans, it amplifies them.";
+  if(l.includes("code") || l.includes("program")) return "Coding is just telling computer what to do step-by-step. Tell me what you wanna build, I'll give you simple code, no jargon.";
+  return `Got it — "${q}"<br><br>I'm listening. Tell me a bit more? Want explanation, code, or should I open something related for you?`;
 }
-
-if(low.includes('open')){
-  // get first word after open as site
-  let parts = site.split(' ');
-  let mainSite = parts[0];
-  openUniversal(mainSite, msgAfter || parts.slice(1).join(' '));
-}else{
-  // if no open word, treat as site
-  openUniversal(site, msgAfter);
+function addMsg(text, who){
+  let d = document.createElement("div");
+  d.className = `msg ${who}`;
+  d.innerHTML = text;
+  chatBox.appendChild(d);
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
-}
+function ask(t){ document.getElementById("q").value=t; go(); }
 </script>
 </body>
 </html>
