@@ -3,27 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ORVP - Master AI + 3D</title>
+<title>ORVO- Master AI + 3D</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-  body{background:#0a0a0a;color:white;display:flex;flex-direction:column;height:100vh}
-  header{background:#111;padding:15px;text-align:center;border-bottom:2px solid #00ff88}
-  header h1{font-size:24px} header h1 span{color:#00ff88}
+  body{background:#0a0a0a;color:white;display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+  header{background:#111;padding:12px;text-align:center;border-bottom:2px solid #00ff88;flex-shrink:0}
+  header h1{font-size:22px} header h1 span{color:#00ff88}
   header p{font-size:11px;color:#aaa}
   #chat{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:12px}
-  .msg{max-width:90%;padding:12px 15px;border-radius:15px;line-height:1.5;font-size:15px}
+  .msg{max-width:90%;padding:12px 15px;border-radius:15px;line-height:1.6;font-size:15px;word-wrap:break-word}
   .user{background:#00ff88;color:black;align-self:flex-end}
   .bot{background:#1e1e1e;align-self:flex-start;border:1px solid #333}
   .bot b{color:#00ff88}
   .source{font-size:11px;color:#00ff88;display:block;margin-bottom:5px}
-  #viewer3d{width:100%;height:280px;background:#000;border-radius:12px;overflow:hidden;margin-top:10px;border:1px solid #00ff88}
-  .btn3d{margin-top:8px;padding:8px 12px;border-radius:20px;border:1px solid #00ff88;background:#000;color:#00ff88;cursor:pointer;font-size:12px}
-  #inputArea{display:flex;padding:12px;background:#111;gap:10px}
-  #userInput{flex:1;padding:13px;border-radius:25px;border:1px solid #333;background:#1e1e1e;color:white;outline:none}
-  button{padding:13px 20px;border:none;border-radius:25px;background:#00ff88;color:black;font-weight:bold;cursor:pointer}
-  .chips{display:flex;gap:8px;padding:0 12px 10px;background:#111;overflow-x:auto}
-  .chips span{background:#222;padding:7px 12px;border-radius:20px;font-size:12px;white-space:nowrap;cursor:pointer}
+  #bottom{flex-shrink:0;background:#111;border-top:1px solid #222;padding:10px 10px calc(10px + env(safe-area-inset-bottom))}
+  .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chips span{background:#222;padding:8px 13px;border-radius:20px;font-size:12px;white-space:nowrap;cursor:pointer;border:1px solid #333;flex-shrink:0}
+  #inputArea{display:flex;gap:8px}
+  #userInput{flex:1;padding:13px 16px;border-radius:25px;border:1px solid #333;background:#1e1e1e;color:white;outline:none;font-size:15px;min-width:0}
+  button{padding:13px 20px;border:none;border-radius:25px;background:#00ff88;color:black;font-weight:bold;cursor:pointer;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -31,10 +31,12 @@
 <header><h1>OR<span>VP</span> - MASTER AI + 3D</h1><p>Wikipedia • DuckDuckGo • Pollinations • Meshy • Tripo • Spline • Three.js</p></header>
 
 <div id="chat">
-  <div class="msg bot"><span class="source">ORVP SYSTEM</span>Bro! Ab main <b>Text + 3D</b> dono bana sakta hu.<br>Try karo: <b>"What is ISRO"</b> ya <b>"Make 3D car"</b></div>
+  <div class="msg bot"><span class="source">ORVP SYSTEM</span>Bro! Main <b>ORVP</b> hu. Text + 3D dono bana sakta hu.<br>Try karo: <b>"Who are you?"</b> ya <b>"Make 3D car"</b></div>
 </div>
 
+<div id="bottom">
 <div class="chips">
+  <span onclick="askChip('Who are you?')">Who are you? 🤖</span>
   <span onclick="askChip('What is ISRO')">What is ISRO?</span>
   <span onclick="askChip('Make 3D car')">Make 3D Car 🚗</span>
   <span onclick="askChip('Create 3D robot')">Create 3D Robot 🤖</span>
@@ -42,21 +44,69 @@
 </div>
 
 <div id="inputArea">
-  <input id="userInput" placeholder="Ask ORVP... Text ya 3D?" onkeypress="if(event.key==='Enter') sendMsg()">
+  <input id="userInput" placeholder="Ask ORVP... Text ya 3D?" autocomplete="off" onkeypress="if(event.key==='Enter') sendMsg()">
   <button onclick="sendMsg()">SEND ➤</button>
+</div>
 </div>
 
 <script>
-// ========= CONFIG - APNE API KEYS YAHAN DALO =========
+// ========= CONFIG =========
 const CONFIG = {
-  MESHY_API_KEY: "YOUR_MESHY_KEY_HERE", // meshy.ai se free key milegi
-  TRIPO_API_KEY: "YOUR_TRIPO_KEY_HERE", // tripo3d.ai se
-  SPLINE_URL: "" // Spline ka embed link
+  MESHY_API_KEY: "YOUR_MESHY_KEY_HERE",
+  TRIPO_API_KEY: "YOUR_TRIPO_KEY_HERE",
+  SPLINE_URL: ""
 };
+
+// ========= 0. ORVP SELF-KNOWLEDGE - ISKO SABSE PEHLE CHECK KARENGE =========
+const ORVP_IDENTITY = {
+  name: "ORVP",
+  fullName: "ORVP - Master AI",
+  creator: "7zyron",
+  appName: "Honk.AI / ORVP",
+  version: "v3",
+  tagline: "India ka Sabse Tez AI"
+};
+
+function getSelfAnswer(input){
+  let l = input.toLowerCase().trim();
+
+  // WHO ARE YOU / WHAT IS ORVP / TUM KAUN HO
+  if(l.includes("who are you") || l.includes("what is orvp") || l.includes("what is orvo") || l.includes("tum kaun") || l.includes("aap kaun") || l.includes("your name") || l.includes("tera naam") || l === "orvp" || l === "orvo" || l === "who is orvp" || l === "who is orvo"){
+    return "Main <b>ORVP</b> hu bro! 🔥 <b>ORVP - Master AI</b><br><br>Mujhe <b>7zyron</b> ne banaya hai. Main Wikipedia, DuckDuckGo aur Pollinations.ai se connect hu, isliye main 1 sec me jawab deta hu.<br><br>Main <b>Text + 3D Model</b> dono bana sakta hu. Try kar - <b>Make 3D Car</b> likh ke dekh!";
+  }
+  // WHO MADE YOU / CREATOR
+  if(l.includes("who made you") || l.includes("who created") || l.includes("kisne banaya") || l.includes("creator") || l.includes("founder") || l.includes("developer") || l.includes("made by") || l.includes("owner")){
+    return "Mujhe <b>7zyron</b> ne banaya hai! 👑<br><br>Wo <b>Honk.AI</b> ka founder hai. Usne mujhe isliye banaya taaki India ko apna tez aur apna AI mile - jo Hindi + Hinglish + English sab samjhe.";
+  }
+  // WHAT CAN YOU DO / FEATURES
+  if(l.includes("what can you") || l.includes("kya kar sakte") || l.includes("features") || l.includes("tum kya") || l.includes("abilities") || l.includes("what do you do")){
+    return "Bro, main ye sab kar sakta hu:<br><br>✅ <b>1. Text Answer</b> - Wikipedia se 1 sec me jawab<br>✅ <b>2. 3D Model</b> - Meshy, Tripo, Spline + Three.js se 3D banata hu<br>✅ <b>3. Auto Detect</b> - Khud samajh jata hu Text chahiye ya 3D<br>✅ <b>4. Hinglish</b> - Hindi + English dono me baat karta hu<br><br>Try kar: <b>What is ISRO</b> ya <b>Make 3D Robot</b>";
+  }
+  // HI / HELLO / GREETING - Pehle wala bug fix
+  if(["hi","hello","hey","hii","namaste","yo","hlo","heyy"].includes(l)){
+    return "Hey bro! 👋 Kya haal hai? Main <b>ORVP</b> hu, 7zyron ne mujhe banaya hai.<br>Mujhse kuch pucho - <b>Who are you?</b> ya <b>Make 3D Car</b>";
+  }
+  // HOW ARE YOU
+  if(l.includes("how are you") || l.includes("kaise ho") || l.includes("kaisa hai")){
+    return "Main ekdum mast hu bro! 🔥 Full charge pe chal raha hu. Tu bata, kya banau tere liye - <b>Text ya 3D?</b>";
+  }
+  // THANKS
+  if(l.includes("thank") || l.includes("thanks") || l.includes("shukriya") || l.includes("dhanyavad")){
+    return "Arre koi baat nahi bro! 😎 ORVP hamesha tere saath hai. Aur kuch chahiye toh bol!";
+  }
+  // BYE
+  if(l.includes("bye") || l.includes("alvida") || l.includes("good night")){
+    return "Bye bro! 👋 Phir milte hai. ORVP ko yaad rakhna - <b>Honk.AI</b> pe!";
+  }
+
+  return null; // Self me nahi mila toh aage Wikipedia pe jayega
+}
 
 // ========= 1. AUTO DETECT - TEXT YA 3D? =========
 function detectMode(input){
   let lower = input.toLowerCase();
+  // Agar self-question hai ya what/who is hai toh TEXT hi rahega
+  if(lower.includes("what is") || lower.includes("who is") || lower.includes("who are") || lower.includes("what is orvp")) return "TEXT";
   let words3d = ["3d","model","car","robot","house","bike","character","banao","create","build","design","make","ghar","gadi","human","animal","chair","table"];
   for(let w of words3d){
     if(lower.includes(w)) return "3D";
@@ -71,12 +121,28 @@ function extractKeyword(input){
   return kw.join(" ") || input;
 }
 
-// ========= 2. TEXT MODE - WIKIPEDIA / DUCKDUCKGO / POLLINATIONS =========
+// ========= 2. TEXT MODE =========
 async function searchWikipedia(keyword){
   try{
-    let res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(keyword)}`);
+    // Pehle search se sahi title lo - disambiguation fix
+    let s = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(keyword)}&format=json&origin=*`);
+    let sj = await s.json();
+    if(!sj.query || !sj.query.search.length) return null;
+    let title = sj.query.search[0].title;
+    let res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
     let data = await res.json();
-    if(data.extract) return data.extract;
+    if(data.type==="disambiguation") return null;
+    if(data.extract && data.extract.length>40) return data.extract;
+    return null;
+  }catch(e){ return null; }
+}
+async function searchDuckDuckGo(keyword){
+  try{
+    let url = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://api.duckduckgo.com/?q=${encodeURIComponent(keyword)}&format=json&no_html=1&skip_disambig=1`)}`;
+    let res = await fetch(url);
+    let data = await res.json();
+    if(data.AbstractText) return data.AbstractText;
+    if(data.RelatedTopics && data.RelatedTopics[0] && data.RelatedTopics[0].Text) return data.RelatedTopics[0].Text;
     return null;
   }catch(e){ return null; }
 }
@@ -88,29 +154,7 @@ async function searchPollinations(keyword){
   }catch(e){ return null; }
 }
 
-// ========= 3. 3D MODE - MESHY / TRIPO / SPLINE / THREE.JS =========
-async function create3DModel(keyword, containerId){
-  // STEP A: Pehle Meshy try karo (Real 3D Model)
-  // NOTE: Meshy ko API Key chahiye, isliye pehle Three.js se instant 3D dikhayenge
-  console.log("ORVP 3D Engine: Meshy -> Tripo -> Spline -> Three.js");
-  console.log("Keyword:", keyword);
-  
-  // STEP B: Three.js se INSTANT 3D banao - 0 sec me
-  buildThreeJS(keyword, containerId);
-  
-  // STEP C: Agar Meshy Key hai toh background me real model banao
-  if(CONFIG.MESHY_API_KEY !== "YOUR_MESHY_KEY_HERE"){
-    // Meshy API call yahan hoga - background me
-    fetch("https://api.meshy.ai/openapi/v2/text-to-3d", {
-      method:"POST",
-      headers:{"Authorization":`Bearer ${CONFIG.MESHY_API_KEY}`, "Content-Type":"application/json"},
-      body: JSON.stringify({mode:"preview", prompt: keyword, art_style:"realistic"})
-    });
-  }
-  return `3D Model ban gaya: ${keyword}`;
-}
-
-// Three.js - Browser me hi 3D banata hai, bina server ke
+// ========= 3. 3D MODE =========
 function buildThreeJS(keyword, containerId){
   let el = document.getElementById(containerId);
   if(!el) return;
@@ -120,26 +164,16 @@ function buildThreeJS(keyword, containerId){
   renderer.setSize(el.clientWidth, el.clientHeight);
   el.innerHTML = "";
   el.appendChild(renderer.domElement);
-
   let color = 0x00ff88;
   if(keyword.includes("car")) color = 0xff0000;
   if(keyword.includes("robot")) color = 0x00aaff;
   if(keyword.includes("house")) color = 0xffff00;
-
   let geometry;
-  if(keyword.includes("car")){
-    // Car jaisa shape - Box + Wheels
-    geometry = new THREE.BoxGeometry(2,0.7,1);
-  } else if(keyword.includes("house")){
-    geometry = new THREE.ConeGeometry(1.2,1.5,4);
-  } else {
-    geometry = new THREE.BoxGeometry(1,1.5,1); // Robot
-  }
-
-  let material = new THREE.MeshBasicMaterial({color: color, wireframe:false});
-  let mesh = new THREE.Mesh(geometry, material);
+  if(keyword.includes("car")) geometry = new THREE.BoxGeometry(2,0.7,1);
+  else if(keyword.includes("house")) geometry = new THREE.ConeGeometry(1.2,1.5,4);
+  else geometry = new THREE.BoxGeometry(1,1.5,1);
+  let mesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color: color}));
   scene.add(mesh);
-  // Wheels for car
   if(keyword.includes("car")){
     let wheelGeo = new THREE.CylinderGeometry(0.3,0.3,0.2,20);
     let wheelMat = new THREE.MeshBasicMaterial({color:0x000000});
@@ -147,12 +181,7 @@ function buildThreeJS(keyword, containerId){
     let w2 = new THREE.Mesh(wheelGeo, wheelMat); w2.position.set(0.6,-0.5,0.6); w2.rotation.x=Math.PI/2; scene.add(w2);
   }
   camera.position.z = 4;
-  function animate(){
-    requestAnimationFrame(animate);
-    mesh.rotation.y += 0.02;
-    mesh.rotation.x += 0.01;
-    renderer.render(scene, camera);
-  }
+  function animate(){ requestAnimationFrame(animate); mesh.rotation.y += 0.02; mesh.rotation.x += 0.01; renderer.render(scene, camera); }
   animate();
 }
 
@@ -175,22 +204,26 @@ async function sendMsg(){
   addMsg(q, "user");
   input.value = "";
 
+  // STEP 0 - SABSE PEHLE KHUD KO CHECK KARO! Yehi naya hai.
+  let selfAns = getSelfAnswer(q);
+  if(selfAns){
+    addMsg(selfAns, "bot", "🧠 ORVP SELF - I KNOW MYSELF");
+    return;
+  }
+
   let mode = detectMode(q);
   let keyword = extractKeyword(q);
-
   let typing = addMsg(`ORVP Detect... Mode: <b>${mode}</b> | Keyword: <b>${keyword}</b>`, "bot", "ORVP AUTO DETECT");
 
   if(mode === "3D"){
-    // 3D MODE
     let id = "viewer_" + Date.now();
     typing.remove();
-    let botDiv = addMsg(`Ho gaya bro! <b>${keyword}</b> ka 3D Model ban gaya. Ghuma ke dekh! 👇<div id="${id}" style="width:100%;height:280px;background:#000;border-radius:12px;margin-top:10px;border:1px solid #00ff88"></div><br><small>Engine: Meshy → Tripo → Spline → Three.js (Instant Preview)</small>`, "bot", "🧊 ORVP 3D ENGINE");
-    // Thoda wait karke 3D banao taaki div ban jaye
+    addMsg(`Ho gaya bro! <b>${keyword}</b> ka 3D Model ban gaya. Ghuma ke dekh! 👇<div id="${id}" style="width:100%;height:280px;background:#000;border-radius:12px;margin-top:10px;border:1px solid #00ff88"></div><br><small>Engine: Meshy → Tripo → Spline → Three.js (Instant Preview)</small>`, "bot", "🧊 ORVP 3D ENGINE");
     setTimeout(()=>{ buildThreeJS(keyword, id); }, 100);
   } else {
-    // TEXT MODE
     let ans = await searchWikipedia(keyword);
     let src = "📚 WIKIPEDIA";
+    if(!ans){ ans = await searchDuckDuckGo(keyword); src = "🦆 DUCKDUCKGO"; }
     if(!ans){ ans = await searchPollinations(keyword); src = "🤖 POLLINATIONS.AI"; }
     if(!ans){ ans = "ORVO is not made for this kind of low potential question"; src = "ORVP SYSTEM"; }
     typing.remove();
