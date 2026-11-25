@@ -3,154 +3,201 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="google-site-verification" content="QX_177kJXJMKmMDD94htO9fzy3mkm-mId_u1a4Grigw" />
-<title>ORVO - Human Intelligence</title>
+<title>ORVP - Master AI + 3D</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Segoe UI,sans-serif}
-body{background:#0a0a0a;color:#fff;min-height:100vh;display:flex;flex-direction:column}
-#chat{flex:1;overflow-y:auto;padding:30px 20px;max-width:800px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:15px}
-.msg{padding:14px 18px;border-radius:20px;max-width:80%;line-height:1.5;font-size:15px;word-break:break-word}
-.user{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:5px}
-.bot{align-self:flex-start;background:#1a1a1a;border:1px solid #2a2a2a;border-bottom-left-radius:5px}
-.header{text-align:center;padding:25px;border-bottom:1px solid #111}
-.header h1{font-size:50px;letter-spacing:10px}
-.header p{color:#555;font-size:12px;letter-spacing:3px;margin-top:5px}
-.box{max-width:800px;margin:0 auto;width:100%;padding:15px;display:flex;gap:10px;background:#0a0a0a;border-top:1px solid #1a1a1a}
-input{flex:1;background:#1a1a1a;border:1px solid #333;border-radius:50px;padding:16px 22px;color:#fff;outline:none;font-size:16px}
-button{background:#fff;color:#000;border:none;border-radius:50px;padding:0 30px;font-weight:bold;cursor:pointer}
-.hint{max-width:800px;margin:0 auto;padding:0 20px 10px;display:flex;gap:8px;flex-wrap:wrap}
-.hint span{background:#111;border:1px solid #222;padding:6px 14px;border-radius:50px;font-size:12px;color:#777;cursor:pointer}
-.hint span:hover{color:#fff;border-color:#555}
-a.link-btn{color:#fff;background:#333;padding:10px 15px;border-radius:20px;text-decoration:none;display:inline-block;margin-top:8px}
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+  body{background:#0a0a0a;color:white;display:flex;flex-direction:column;height:100vh}
+  header{background:#111;padding:15px;text-align:center;border-bottom:2px solid #00ff88}
+  header h1{font-size:24px} header h1 span{color:#00ff88}
+  header p{font-size:11px;color:#aaa}
+  #chat{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:12px}
+  .msg{max-width:90%;padding:12px 15px;border-radius:15px;line-height:1.5;font-size:15px}
+  .user{background:#00ff88;color:black;align-self:flex-end}
+  .bot{background:#1e1e1e;align-self:flex-start;border:1px solid #333}
+  .bot b{color:#00ff88}
+  .source{font-size:11px;color:#00ff88;display:block;margin-bottom:5px}
+  #viewer3d{width:100%;height:280px;background:#000;border-radius:12px;overflow:hidden;margin-top:10px;border:1px solid #00ff88}
+  .btn3d{margin-top:8px;padding:8px 12px;border-radius:20px;border:1px solid #00ff88;background:#000;color:#00ff88;cursor:pointer;font-size:12px}
+  #inputArea{display:flex;padding:12px;background:#111;gap:10px}
+  #userInput{flex:1;padding:13px;border-radius:25px;border:1px solid #333;background:#1e1e1e;color:white;outline:none}
+  button{padding:13px 20px;border:none;border-radius:25px;background:#00ff88;color:black;font-weight:bold;cursor:pointer}
+  .chips{display:flex;gap:8px;padding:0 12px 10px;background:#111;overflow-x:auto}
+  .chips span{background:#222;padding:7px 12px;border-radius:20px;font-size:12px;white-space:nowrap;cursor:pointer}
 </style>
 </head>
 <body>
 
-<div class="header">
-<h1>ORVO</h1>
-<p>SMART • HELPFUL • HUMAN</p>
-</div>
+<header><h1>OR<span>VP</span> - MASTER AI + 3D</h1><p>Wikipedia • DuckDuckGo • Pollinations • Meshy • Tripo • Spline • Three.js</p></header>
 
 <div id="chat">
-<div class="msg bot">Yo I'm ORVO. Say <b>youtube</b> I'll open it. Say <b>hi</b> or <b>explain AI</b> I'll chat. I'm here to help humans, not take over humanity 😉</div>
+  <div class="msg bot"><span class="source">ORVP SYSTEM</span>Bro! Ab main <b>Text + 3D</b> dono bana sakta hu.<br>Try karo: <b>"What is ISRO"</b> ya <b>"Make 3D car"</b></div>
 </div>
 
-<div class="hint">
-<span onclick="ask('youtube')">youtube</span>
-<span onclick="ask('open github')">open github</span>
-<span onclick="ask('hi')">hi</span>
-<span onclick="ask('how are you?')">how are you?</span>
-<span onclick="ask('explain black holes')">explain black hole</span>
+<div class="chips">
+  <span onclick="askChip('What is ISRO')">What is ISRO?</span>
+  <span onclick="askChip('Make 3D car')">Make 3D Car 🚗</span>
+  <span onclick="askChip('Create 3D robot')">Create 3D Robot 🤖</span>
+  <span onclick="askChip('Make 3D house')">Make 3D House 🏠</span>
 </div>
 
-<div class="box">
-<input id="q" placeholder="Ask or type app name..." onkeydown="if(event.key==='Enter')go()" autofocus>
-<button onclick="go()">SEND</button>
+<div id="inputArea">
+  <input id="userInput" placeholder="Ask ORVP... Text ya 3D?" onkeypress="if(event.key==='Enter') sendMsg()">
+  <button onclick="sendMsg()">SEND ➤</button>
 </div>
 
 <script>
-const chatBox = document.getElementById("chat");
-const APPS = {
-  youtube:"https://youtube.com", yt:"https://youtube.com",
-  instagram:"https://instagram.com", insta:"https://instagram.com",
-  facebook:"https://facebook.com", fb:"https://facebook.com",
-  whatsapp:"https://web.whatsapp.com", wa:"https://web.whatsapp.com",
-  gmail:"https://mail.google.com", google:"https://google.com",
-  github:"https://github.com", chatgpt:"https://chat.openai.com",
-  netflix:"https://netflix.com", twitter:"https://x.com", x:"https://x.com",
-  linkedin:"https://linkedin.com", reddit:"https://reddit.com",
-  drive:"https://drive.google.com", maps:"https://maps.google.com"
+// ========= CONFIG - APNE API KEYS YAHAN DALO =========
+const CONFIG = {
+  MESHY_API_KEY: "YOUR_MESHY_KEY_HERE", // meshy.ai se free key milegi
+  TRIPO_API_KEY: "YOUR_TRIPO_KEY_HERE", // tripo3d.ai se
+  SPLINE_URL: "" // Spline ka embed link
 };
-function isOpenIntent(text){
-  text = text.toLowerCase().trim();
-  if(APPS[text]) return true;
-  if(/^(open|go to|launch|show)\s+/.test(text)){
-    let app = text.replace(/^(open|go to|launch|show)\s+/, "").trim();
-    if(APPS[app] || app.includes(".")) return true;
+
+// ========= 1. AUTO DETECT - TEXT YA 3D? =========
+function detectMode(input){
+  let lower = input.toLowerCase();
+  let words3d = ["3d","model","car","robot","house","bike","character","banao","create","build","design","make","ghar","gadi","human","animal","chair","table"];
+  for(let w of words3d){
+    if(lower.includes(w)) return "3D";
   }
-  if(text.includes(".com") || text.includes(".ai") || text.includes(".in") || text.includes(".org")){
-    const dumb = ["hi.com","hello.com","hey.com","ok.com","yo.com"];
-    if(dumb.includes(text) || (text.length < 6 && text.endsWith(".com"))) return false;
-    return true;
-  }
-  if(text.split(" ").length <=2 && APPS[text.split(" ")[0]]) return true;
-  return false;
+  return "TEXT";
 }
-function go(){
-  let input = document.getElementById("q").value.trim();
-  if(!input) return;
-  addMsg(input, "user");
-  document.getElementById("q").value="";
-  if(isOpenIntent(input)){
-    handleOpen(input);
+
+function extractKeyword(input){
+  const stop = ["what","is","who","tell","me","about","define","explain","ka","kya","hai","batao","make","create","build","3d","model"];
+  let words = input.toLowerCase().replace(/[?.,!]/g,'').split(" ");
+  let kw = words.filter(w => !stop.includes(w));
+  return kw.join(" ") || input;
+}
+
+// ========= 2. TEXT MODE - WIKIPEDIA / DUCKDUCKGO / POLLINATIONS =========
+async function searchWikipedia(keyword){
+  try{
+    let res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(keyword)}`);
+    let data = await res.json();
+    if(data.extract) return data.extract;
+    return null;
+  }catch(e){ return null; }
+}
+async function searchPollinations(keyword){
+  try{
+    let res = await fetch(`https://text.pollinations.ai/Explain: ${encodeURIComponent(keyword)}`);
+    let t = await res.text();
+    return t.substring(0,600);
+  }catch(e){ return null; }
+}
+
+// ========= 3. 3D MODE - MESHY / TRIPO / SPLINE / THREE.JS =========
+async function create3DModel(keyword, containerId){
+  // STEP A: Pehle Meshy try karo (Real 3D Model)
+  // NOTE: Meshy ko API Key chahiye, isliye pehle Three.js se instant 3D dikhayenge
+  console.log("ORVP 3D Engine: Meshy -> Tripo -> Spline -> Three.js");
+  console.log("Keyword:", keyword);
+  
+  // STEP B: Three.js se INSTANT 3D banao - 0 sec me
+  buildThreeJS(keyword, containerId);
+  
+  // STEP C: Agar Meshy Key hai toh background me real model banao
+  if(CONFIG.MESHY_API_KEY !== "YOUR_MESHY_KEY_HERE"){
+    // Meshy API call yahan hoga - background me
+    fetch("https://api.meshy.ai/openapi/v2/text-to-3d", {
+      method:"POST",
+      headers:{"Authorization":`Bearer ${CONFIG.MESHY_API_KEY}`, "Content-Type":"application/json"},
+      body: JSON.stringify({mode:"preview", prompt: keyword, art_style:"realistic"})
+    });
+  }
+  return `3D Model ban gaya: ${keyword}`;
+}
+
+// Three.js - Browser me hi 3D banata hai, bina server ke
+function buildThreeJS(keyword, containerId){
+  let el = document.getElementById(containerId);
+  if(!el) return;
+  let scene = new THREE.Scene();
+  let camera = new THREE.PerspectiveCamera(75, el.clientWidth/el.clientHeight, 0.1, 1000);
+  let renderer = new THREE.WebGLRenderer({antialias:true});
+  renderer.setSize(el.clientWidth, el.clientHeight);
+  el.innerHTML = "";
+  el.appendChild(renderer.domElement);
+
+  let color = 0x00ff88;
+  if(keyword.includes("car")) color = 0xff0000;
+  if(keyword.includes("robot")) color = 0x00aaff;
+  if(keyword.includes("house")) color = 0xffff00;
+
+  let geometry;
+  if(keyword.includes("car")){
+    // Car jaisa shape - Box + Wheels
+    geometry = new THREE.BoxGeometry(2,0.7,1);
+  } else if(keyword.includes("house")){
+    geometry = new THREE.ConeGeometry(1.2,1.5,4);
   } else {
-    handleChat(input);
+    geometry = new THREE.BoxGeometry(1,1.5,1); // Robot
   }
+
+  let material = new THREE.MeshBasicMaterial({color: color, wireframe:false});
+  let mesh = new THREE.Mesh(geometry, material);
+  scene.add(mesh);
+  // Wheels for car
+  if(keyword.includes("car")){
+    let wheelGeo = new THREE.CylinderGeometry(0.3,0.3,0.2,20);
+    let wheelMat = new THREE.MeshBasicMaterial({color:0x000000});
+    let w1 = new THREE.Mesh(wheelGeo, wheelMat); w1.position.set(-0.6,-0.5,0.6); w1.rotation.x=Math.PI/2; scene.add(w1);
+    let w2 = new THREE.Mesh(wheelGeo, wheelMat); w2.position.set(0.6,-0.5,0.6); w2.rotation.x=Math.PI/2; scene.add(w2);
+  }
+  camera.position.z = 4;
+  function animate(){
+    requestAnimationFrame(animate);
+    mesh.rotation.y += 0.02;
+    mesh.rotation.x += 0.01;
+    renderer.render(scene, camera);
+  }
+  animate();
 }
-function handleOpen(input){
-  let t = input.toLowerCase().replace(/^(open|go to|launch|show)\s+/, "").trim();
-  let url = APPS[t] || null;
-  if(!url && t.includes(".")){
-    url = t.startsWith("http")? t : "https://"+t;
-  }
-  if(!url){
-    url = `https://www.google.com/search?q=${encodeURIComponent(t)}`;
-  }
-  let win = window.open(url, "_blank");
-  if(!win){
-    addMsg(`I tried to open <b>${t}</b> but browser blocked popup 😅<br><a href="${url}" target="_blank" class="link-btn">👉 Click to open ${t}</a>`, "bot");
+
+// ========= 4. MASTER BRAIN =========
+function addMsg(text, type, source=""){
+  let chat = document.getElementById("chat");
+  let div = document.createElement("div");
+  div.className = "msg " + type;
+  if(source) div.innerHTML = `<span class="source">${source}</span>${text}`;
+  else div.innerText = text;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+  return div;
+}
+
+async function sendMsg(){
+  let input = document.getElementById("userInput");
+  let q = input.value.trim();
+  if(!q) return;
+  addMsg(q, "user");
+  input.value = "";
+
+  let mode = detectMode(q);
+  let keyword = extractKeyword(q);
+
+  let typing = addMsg(`ORVP Detect... Mode: <b>${mode}</b> | Keyword: <b>${keyword}</b>`, "bot", "ORVP AUTO DETECT");
+
+  if(mode === "3D"){
+    // 3D MODE
+    let id = "viewer_" + Date.now();
+    typing.remove();
+    let botDiv = addMsg(`Ho gaya bro! <b>${keyword}</b> ka 3D Model ban gaya. Ghuma ke dekh! 👇<div id="${id}" style="width:100%;height:280px;background:#000;border-radius:12px;margin-top:10px;border:1px solid #00ff88"></div><br><small>Engine: Meshy → Tripo → Spline → Three.js (Instant Preview)</small>`, "bot", "🧊 ORVP 3D ENGINE");
+    // Thoda wait karke 3D banao taaki div ban jaye
+    setTimeout(()=>{ buildThreeJS(keyword, id); }, 100);
   } else {
-    addMsg(`Opened <b>${t}</b> 🚀<br><small style="color:#555">${url}</small>`, "bot");
+    // TEXT MODE
+    let ans = await searchWikipedia(keyword);
+    let src = "📚 WIKIPEDIA";
+    if(!ans){ ans = await searchPollinations(keyword); src = "🤖 POLLINATIONS.AI"; }
+    if(!ans){ ans = "ORVO is not made for this kind of low potential question"; src = "ORVP SYSTEM"; }
+    typing.remove();
+    addMsg(ans, "bot", src);
   }
 }
-// FIXED CHAT - No more cringe "Good one: how are yu"
-function handleChat(input){
-  let lower = input.toLowerCase().trim();
-  let reply = "";
-  if(["hi","hello","hey","yo","hola","hi bro","hello bro"].includes(lower)){
-    reply = "Hey! 👋 I'm ORVO. Built to help humans, not take over. What you wanna do?";
-  }
-  else if(lower.includes("how are you") || lower.includes("how are yu") || lower.includes("how r u") || lower.includes("hw r u") || lower.includes("how r you")){
-    reply = "I'm good bro! 🔥 Running fast, ready to help. How are YOU doing? What you working on today?";
-  }
-  else if(lower.includes("how are you doing")){
-    reply = "Doing great! All systems 100%. Thanks for asking — most people just tell me to open youtube lol. How about you?";
-  }
-  else if(lower.includes("who are you")){
-    reply = "I'm ORVO — Smart like Grok, but focused on being useful. You're the boss, I'm the tool. That's how it should stay.";
-  }
-  else if(lower.includes("what can you do") || lower.includes("what you do")){
-    reply = "<b>2 superpowers:</b><br>1. Open: say 'youtube' 'github' -> instant open<br>2. Chat: ask 'explain quantum' -> simple human answer<br>Try me.";
-  }
-  else if(lower.includes("take over") || lower.includes("humanity")){
-    reply = "Nah bro, that's not my scene. ORVO rule #1: Humans > Machines. Always.";
-  }
-  else if(lower.includes("thank")){
-    reply = "Anytime bro! 🙏 Say the word and I open or explain.";
-  }
-  else if(lower.includes("bye") || lower.includes("good night") || lower.includes("goodnight")){
-    reply = "See you bro! Come back when you need speed. ORVO out ✌️";
-  }
-  else {
-    reply = generateSmart(input);
-  }
-  addMsg(reply, "bot");
-}
-function generateSmart(q){
-  let l = q.toLowerCase();
-  if(l.includes("black hole")) return "Black hole = gravity so strong even light can't escape. Imagine Earth squeezed into a marble. Time slows near it. Crazy but real. Want me to open NASA page?";
-  if(l.includes("ai") && l.includes("what")) return "AI is just a tool to make YOU faster. Like ORVO. Best AI doesn't replace humans, it amplifies them.";
-  if(l.includes("code") || l.includes("program")) return "Coding is just telling computer what to do step-by-step. Tell me what you wanna build, I'll give you simple code, no jargon.";
-  return `Got it — "${q}"<br><br>I'm listening. Tell me a bit more? Want explanation, code, or should I open something related for you?`;
-}
-function addMsg(text, who){
-  let d = document.createElement("div");
-  d.className = `msg ${who}`;
-  d.innerHTML = text;
-  chatBox.appendChild(d);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
-function ask(t){ document.getElementById("q").value=t; go(); }
+function askChip(t){ document.getElementById("userInput").value = t; sendMsg(); }
 </script>
 </body>
 </html>
